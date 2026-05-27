@@ -127,6 +127,7 @@ function ResourceHubContent({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(initialError);
   const pendingWrittenQueries = useRef(new Map<string, number>());
+  const didMountResourceQuery = useRef(false);
   const deferredSearch = useDeferredValue(search);
 
   function rememberWrittenQuery(query: string) {
@@ -202,6 +203,10 @@ function ResourceHubContent({
   }, [searchParams]);
 
   useEffect(() => {
+    if (!didMountResourceQuery.current) {
+      didMountResourceQuery.current = true;
+      return;
+    }
     const controller = new AbortController();
     const query = buildResourceQueryString({
       q: deferredSearch,

@@ -40,11 +40,17 @@ async function fetchResourceCounts(ownerIds: number[]) {
   return counts;
 }
 
-export async function listMembers() {
-  const { data, error } = await getSupabase()
+export async function listMembers(limit?: number) {
+  let query = getSupabase()
     .from("members")
     .select("github_id, github_username, avatar_url, field, created_at, updated_at")
     .order("updated_at", { ascending: false });
+
+  if (limit) {
+    query = query.limit(limit);
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     throw new Error(error.message);
