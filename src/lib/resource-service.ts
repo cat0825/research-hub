@@ -329,10 +329,12 @@ export async function listResources(filters: ResourceFilters, viewerGithubId?: n
     return [];
   }
 
+  const limit = filters.limit ?? DEFAULT_RESOURCE_LIMIT;
+  const offset = filters.offset ?? 0;
   let query = getSupabase()
     .from("resources")
     .select(RESOURCE_SUMMARY_SELECT)
-    .limit(filters.limit ?? DEFAULT_RESOURCE_LIMIT)
+    .range(offset, offset + limit - 1)
     .order("updated_at", { ascending: false });
 
   if (filters.type) {

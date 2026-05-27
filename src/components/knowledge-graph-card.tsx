@@ -18,7 +18,7 @@ interface KnowledgeGraphCardProps {
 
 export function KnowledgeGraphCard({ graph }: KnowledgeGraphCardProps) {
   return (
-    <Link href={`/graphs/${graph.id}`} className="block">
+    <Link href={`/graphs/${graph.id}`} prefetch={false} className="block">
       <Card className="transition hover:bg-muted/40">
         <CardHeader>
           <div className="flex flex-wrap items-start justify-between gap-3">

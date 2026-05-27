@@ -15,6 +15,7 @@ test("buildResourceFilters normalizes resource list query params", () => {
       owner: "42",
       sort: "discussed",
       limit: "12",
+      offset: "24",
     }),
     {
       q: "transformer",
@@ -23,6 +24,7 @@ test("buildResourceFilters normalizes resource list query params", () => {
       ownerGithubId: 42,
       sort: "discussed",
       limit: 12,
+      offset: 24,
     }
   );
 });
@@ -36,6 +38,7 @@ test("buildResourceFilters falls back from invalid type owner and sort", () => {
       owner: "nope",
       sort: "random",
       limit: "999",
+      offset: "0",
     }),
     {
       sort: "latest",
@@ -60,8 +63,9 @@ test("buildResourceQueryString serializes active filters in stable order", () =>
       tag: "ai-infra",
       sort: "bookmarked",
       limit: 36,
+      offset: 48,
     }),
-    "q=infra&type=web&tag=ai-infra&sort=bookmarked&limit=36"
+    "q=infra&type=web&tag=ai-infra&sort=bookmarked&limit=36&offset=48"
   );
 });
 

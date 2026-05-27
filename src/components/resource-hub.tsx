@@ -19,6 +19,7 @@ import type {
   ResourceTag,
 } from "@/lib/resource-types.ts";
 import {
+  DEFAULT_RESOURCE_LIMIT,
   buildResourceQueryString,
   normalizeResourceSort,
   type ResourceSort,
@@ -125,6 +126,10 @@ function ResourceHubContent({
     normalizeResourceSort(searchParams.get("sort"))
   );
   const [loading, setLoading] = useState(false);
+  const [hasMoreResources, setHasMoreResources] = useState(
+    initialResources.length === DEFAULT_RESOURCE_LIMIT
+  );
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(initialError);
   const pendingWrittenQueries = useRef(new Map<string, number>());
   const didMountResourceQuery = useRef(false);
@@ -162,6 +167,7 @@ function ResourceHubContent({
       type: nextType === "all" ? undefined : nextType,
       tag: nextTag === "all" ? undefined : nextTag,
       sort: nextSort,
+      limit: DEFAULT_RESOURCE_LIMIT,
     });
     const href = query ? `${pathname}?${query}` : pathname;
 
@@ -213,6 +219,7 @@ function ResourceHubContent({
       type: selectedType === "all" ? undefined : selectedType,
       tag: selectedTag === "all" ? undefined : selectedTag,
       sort: selectedSort,
+      limit: DEFAULT_RESOURCE_LIMIT,
     });
 
     startTransition(() => {
@@ -231,7 +238,9 @@ function ResourceHubContent({
         return response.json();
       })
       .then((data) => {
-        setResources(Array.isArray(data) ? data : []);
+        const nextResources = Array.isArray(data) ? data : [];
+        setResources(nextResources);
+        setHasMoreResources(nextResources.length === DEFAULT_RESOURCE_LIMIT);
         setLoading(false);
       })
       .catch((fetchError: unknown) => {
@@ -245,6 +254,42 @@ function ResourceHubContent({
 
     return () => controller.abort();
   }, [deferredSearch, selectedSort, selectedTag, selectedType]);
+
+  function loadMoreResources() {
+    const query = buildResourceQueryString({
+      q: deferredSearch,
+      type: selectedType === "all" ? undefined : selectedType,
+      tag: selectedTag === "all" ? undefined : selectedTag,
+      sort: selectedSort,
+      limit: DEFAULT_RESOURCE_LIMIT + 1,
+      offset: resources.length,
+    });
+
+    setLoadingMore(true);
+    setError("");
+
+    fetch(`/api/resources${query ? `?${query}` : ""}`)
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("Resource request failed");
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        const nextResources = Array.isArray(data) ? data : [];
+        setResources((current) => [
+          ...current,
+          ...nextResources.slice(0, DEFAULT_RESOURCE_LIMIT),
+        ]);
+        setHasMoreResources(nextResources.length > DEFAULT_RESOURCE_LIMIT);
+        setLoadingMore(false);
+      })
+      .catch(() => {
+        setError("更多资源加载失败，已保留当前结果。");
+        setLoadingMore(false);
+      });
+  }
 
   const activeFilters =
     hasActiveResourceFilters({
@@ -460,6 +505,16 @@ function ResourceHubContent({
               {resources.map((resource) => (
                 <ResourceCard key={resource.id} resource={resource} />
               ))}
+              {hasMoreResources ? (
+                <button
+                  type="button"
+                  onClick={loadMoreResources}
+                  disabled={loadingMore}
+                  className="rounded-xl border border-dashed px-4 py-3 text-sm font-medium text-muted-foreground transition hover:border-foreground/30 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {loadingMore ? "正在加载更多..." : "加载更多资源"}
+                </button>
+              ) : null}
             </div>
           )}
         </div>

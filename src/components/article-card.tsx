@@ -19,6 +19,7 @@ export function ArticleCard({ article, compact = false }: ArticleCardProps) {
           <div className="space-y-1">
             <Link
               href={`/article/${article.id}`}
+              prefetch={false}
               className="block text-base font-semibold leading-snug tracking-tight underline-offset-4 hover:underline"
             >
               {article.title}
