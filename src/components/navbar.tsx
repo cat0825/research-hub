@@ -28,6 +28,11 @@ export function Navbar() {
               知识
             </Button>
           </Link>
+          <Link href="/graphs">
+            <Button variant="ghost" size="sm">
+              图谱
+            </Button>
+          </Link>
           <a
             href="https://github.com/cat0825/research-hub"
             target="_blank"

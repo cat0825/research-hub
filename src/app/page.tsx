@@ -19,7 +19,7 @@ export default async function Home() {
     await Promise.allSettled([
     listResources({ sort: "latest" }, viewerGithubId),
     listTags(),
-    listMembers(),
+    listMembers(8),
     listArticles({ limit: 4 }),
   ]);
 

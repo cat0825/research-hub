@@ -1,5 +1,9 @@
 import { getSupabase } from "./supabase.ts";
-import { type ResourceFilters, type ResourceSort } from "./resource-queries.ts";
+import {
+  DEFAULT_RESOURCE_LIMIT,
+  type ResourceFilters,
+  type ResourceSort,
+} from "./resource-queries.ts";
 import { parseResourceDraft } from "./resource-form.ts";
 import type {
   MemberSummary,
@@ -325,9 +329,12 @@ export async function listResources(filters: ResourceFilters, viewerGithubId?: n
     return [];
   }
 
+  const limit = filters.limit ?? DEFAULT_RESOURCE_LIMIT;
+  const offset = filters.offset ?? 0;
   let query = getSupabase()
     .from("resources")
     .select(RESOURCE_SUMMARY_SELECT)
+    .range(offset, offset + limit - 1)
     .order("updated_at", { ascending: false });
 
   if (filters.type) {

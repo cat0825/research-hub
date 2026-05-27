@@ -73,6 +73,7 @@ export function ResourceCard({
 
       <Link
         href={`/resource/${resource.id}`}
+        prefetch={false}
         aria-label={`查看资源详情：${title}`}
         className="block space-y-3 px-4 py-3 outline-none transition focus-visible:bg-muted/60"
       >

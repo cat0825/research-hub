@@ -1,0 +1,1538 @@
+{
+  "version": "1.0.0",
+  "kind": "knowledge",
+  "project": {
+    "name": "Transformer Understand-Anything Wiki",
+    "languages": [
+      "markdown"
+    ],
+    "frameworks": [
+      "karpathy-wiki"
+    ],
+    "description": "Knowledge graph for Transformer Understand-Anything Wiki",
+    "analyzedAt": "2026-05-27T06:00:59.368948+00:00",
+    "gitCommitHash": "f2e748457eef3b43527dee9d6439a46102d91dfc"
+  },
+  "nodes": [
+    {
+      "id": "article:Decoder",
+      "type": "article",
+      "name": "Decoder",
+      "filePath": "Decoder.md",
+      "summary": "[[Decoder]] is the output-generating half of [[Transformer Architecture]]. It predicts target tokens autoregressively, using previous target tokens and the contextual source representation from [[E...",
+      "tags": [
+        "architecture",
+        "decoder"
+      ],
+      "complexity": "moderate",
+      "knowledgeMeta": {
+        "wikilinks": [
+          "Decoder",
+          "Transformer Architecture",
+          "Encoder",
+          "Masked Self-Attention",
+          "Encoder-Decoder Attention",
+          "Feed Forward Network",
+          "Residual Connection",
+          "Layer Normalization",
+          "Masked Self-Attention",
+          "Encoder-Decoder Attention"
+        ],
+        "category": "Architecture",
+        "content": "---\ntags: architecture, decoder\n---\n\n# Decoder\n\n[[Decoder]] is the output-generating half of [[Transformer Architecture]]. It predicts target tokens autoregressively, using previous target tokens and the contextual source representation from [[Encoder]].\n\nEach decoder layer contains three sublayers: [[Masked Self-Attention]], [[Encoder-Decoder Attention]], and [[Feed Forward Network]]. These are wrapped with [[Residual Connection]] and [[Layer Normalization]].\n\n## Why masking is needed\n\nDuring training, the full target sentence is available. [[Masked Self-Attention]] prevents a position from seeing future target tokens, preserving the causal generation constraint.\n\n## Source conditioning\n\n[[Encoder-Decoder Attention]] lets the decoder query encoder outputs. This is how generated target tokens stay aligned with the source sequence.\n",
+        "backlinks": [
+          "article:Encoder-Decoder Attention",
+          "article:Encoder",
+          "article:Feed Forward Network",
+          "article:Layer Normalization",
+          "article:Masked Self-Attention",
+          "article:Masked Self-Attention",
+          "article:Multi-Head Attention",
+          "article:Self-Attention",
+          "article:Token Embedding",
+          "article:Transformer Architecture",
+          "article:Transformer Reading Path"
+        ]
+      }
+    },
+    {
+      "id": "article:Encoder-Decoder Attention",
+      "type": "article",
+      "name": "Encoder-Decoder Attention",
+      "filePath": "Encoder-Decoder Attention.md",
+      "summary": "[[Encoder-Decoder Attention]] connects the [[Decoder]] to the [[Encoder]]. The decoder provides queries, while the encoder outputs provide keys and values.",
+      "tags": [
+        "alignment",
+        "architecture",
+        "attention",
+        "decoder"
+      ],
+      "complexity": "simple",
+      "knowledgeMeta": {
+        "wikilinks": [
+          "Encoder-Decoder Attention",
+          "Decoder",
+          "Encoder",
+          "Self-Attention"
+        ],
+        "category": "Architecture",
+        "content": "---\ntags: attention, decoder, alignment\n---\n\n# Encoder-Decoder Attention\n\n[[Encoder-Decoder Attention]] connects the [[Decoder]] to the [[Encoder]]. The decoder provides queries, while the encoder outputs provide keys and values.\n\nThis mechanism lets each target position select relevant source positions. In machine translation, it plays the alignment role that earlier sequence-to-sequence models handled with attention over recurrent states.\n\n## Difference from self-attention\n\n[[Self-Attention]] relates tokens within the same sequence. Encoder-decoder attention relates target-side decoder states to source-side encoder states.\n\n## Role in Transformer\n\nWithout this bridge, the decoder would only model the target prefix. With encoder-decoder attention, generation is conditioned on the input sentence.\n",
+        "backlinks": [
+          "article:Decoder",
+          "article:Decoder",
+          "article:Encoder",
+          "article:Multi-Head Attention",
+          "article:Residual Connection",
+          "article:Scaled Dot-Product Attention",
+          "article:Transformer Architecture",
+          "article:Transformer Reading Path"
+        ]
+      }
+    },
+    {
+      "id": "article:Encoder",
+      "type": "article",
+      "name": "Encoder",
+      "filePath": "Encoder.md",
+      "summary": "[[Encoder]] is the input-processing half of [[Transformer Architecture]]. It transforms source tokens into contextual representations that the [[Decoder]] can consume through [[Encoder-Decoder Atte...",
+      "tags": [
+        "architecture",
+        "encoder"
+      ],
+      "complexity": "moderate",
+      "knowledgeMeta": {
+        "wikilinks": [
+          "Encoder",
+          "Transformer Architecture",
+          "Decoder",
+          "Encoder-Decoder Attention",
+          "Multi-Head Attention",
+          "Self-Attention",
+          "Feed Forward Network",
+          "Residual Connection",
+          "Layer Normalization",
+          "Token Embedding",
+          "Positional Encoding"
+        ],
+        "category": "Architecture",
+        "content": "---\ntags: architecture, encoder\n---\n\n# Encoder\n\n[[Encoder]] is the input-processing half of [[Transformer Architecture]]. It transforms source tokens into contextual representations that the [[Decoder]] can consume through [[Encoder-Decoder Attention]].\n\nEach encoder layer contains [[Multi-Head Attention]] applied as bidirectional [[Self-Attention]], followed by a [[Feed Forward Network]]. Each sublayer is wrapped with [[Residual Connection]] and [[Layer Normalization]].\n\n## Information flow\n\n[[Token Embedding]] and [[Positional Encoding]] create the initial sequence representation. The encoder then repeatedly mixes information across tokens with self-attention and transforms each position with a feed-forward network.\n\n## Why it matters\n\nThe encoder is where the source sequence becomes a set of contextual token vectors. Unlike an RNN, all positions can be processed in parallel within each layer.\n",
+        "backlinks": [
+          "article:Decoder",
+          "article:Encoder-Decoder Attention",
+          "article:Feed Forward Network",
+          "article:Layer Normalization",
+          "article:Masked Self-Attention",
+          "article:Multi-Head Attention",
+          "article:Self-Attention",
+          "article:Token Embedding",
+          "article:Transformer Architecture",
+          "article:Transformer Reading Path"
+        ]
+      }
+    },
+    {
+      "id": "article:Feed Forward Network",
+      "type": "article",
+      "name": "Feed Forward Network",
+      "filePath": "Feed Forward Network.md",
+      "summary": "[[Feed Forward Network]] is the position-wise MLP sublayer in each [[Encoder]] and [[Decoder]] layer. It applies the same two-layer neural network independently to every token position.",
+      "tags": [
+        "architecture",
+        "feed-forward",
+        "representation"
+      ],
+      "complexity": "moderate",
+      "knowledgeMeta": {
+        "wikilinks": [
+          "Feed Forward Network",
+          "Encoder",
+          "Decoder",
+          "Multi-Head Attention",
+          "Residual Connection",
+          "Layer Normalization"
+        ],
+        "category": "Representation",
+        "content": "---\ntags: architecture, feed-forward\n---\n\n# Feed Forward Network\n\n[[Feed Forward Network]] is the position-wise MLP sublayer in each [[Encoder]] and [[Decoder]] layer. It applies the same two-layer neural network independently to every token position.\n\nAttention mixes information across positions. The feed-forward network transforms each token representation after that mixing. This separation is important: attention handles communication, while the feed-forward network handles per-token nonlinear transformation.\n\n## Role in Transformer\n\nEach Transformer layer alternates global interaction through [[Multi-Head Attention]] with local transformation through the feed-forward network.\n\n## Related concepts\n\n- [[Residual Connection]] wraps the feed-forward sublayer.\n- [[Layer Normalization]] stabilizes the output.\n",
+        "backlinks": [
+          "article:Decoder",
+          "article:Encoder",
+          "article:Layer Normalization",
+          "article:Residual Connection",
+          "article:Transformer Architecture",
+          "article:Transformer Reading Path"
+        ]
+      }
+    },
+    {
+      "id": "article:Layer Normalization",
+      "type": "article",
+      "name": "Layer Normalization",
+      "filePath": "Layer Normalization.md",
+      "summary": "[[Layer Normalization]] stabilizes activations inside [[Transformer Architecture]]. It normalizes features within each token representation and is paired with [[Residual Connection]] around each su...",
+      "tags": [
+        "normalization",
+        "optimization",
+        "representation"
+      ],
+      "complexity": "moderate",
+      "knowledgeMeta": {
+        "wikilinks": [
+          "Layer Normalization",
+          "Transformer Architecture",
+          "Residual Connection",
+          "Encoder",
+          "Decoder",
+          "Residual Connection",
+          "Feed Forward Network"
+        ],
+        "category": "Representation",
+        "content": "---\ntags: optimization, normalization\n---\n\n# Layer Normalization\n\n[[Layer Normalization]] stabilizes activations inside [[Transformer Architecture]]. It normalizes features within each token representation and is paired with [[Residual Connection]] around each sublayer.\n\nIn the original paper, layer normalization is applied after the residual addition. Later variants often use pre-normalization to improve training stability in very deep Transformers.\n\n## Role in Transformer\n\nLayer normalization appears after attention and feed-forward sublayers in both [[Encoder]] and [[Decoder]].\n\n## Related concepts\n\n- [[Residual Connection]] preserves information flow.\n- [[Feed Forward Network]] and attention sublayers rely on normalization for stable stacking.\n",
+        "backlinks": [
+          "article:Decoder",
+          "article:Encoder",
+          "article:Feed Forward Network",
+          "article:Residual Connection",
+          "article:Transformer Architecture",
+          "article:Transformer Reading Path"
+        ]
+      }
+    },
+    {
+      "id": "article:Limitations",
+      "type": "article",
+      "name": "Limitations",
+      "filePath": "Limitations.md",
+      "summary": "[[Limitations]] captures the main tradeoffs of [[Transformer Architecture]]. The most important limitation is the O(n²) cost of [[Self-Attention]] with respect to sequence length. Every token can a...",
+      "tags": [
+        "attention",
+        "limitation",
+        "training and evidence"
+      ],
+      "complexity": "simple",
+      "knowledgeMeta": {
+        "wikilinks": [
+          "Limitations",
+          "Transformer Architecture",
+          "Self-Attention",
+          "Positional Encoding",
+          "Multi-Head Attention"
+        ],
+        "category": "Training and Evidence",
+        "content": "---\ntags: limitation, attention\n---\n\n# Limitations\n\n[[Limitations]] captures the main tradeoffs of [[Transformer Architecture]]. The most important limitation is the O(n²) cost of [[Self-Attention]] with respect to sequence length. Every token can attend to every other token, which creates a full attention matrix.\n\nOther limitations include weak built-in sequence bias compared with recurrence, sensitivity to positional representation, and interpretability risk when treating attention maps as explanations.\n\n## Long-context cost\n\nThe quadratic attention matrix becomes expensive for long documents, high-resolution visual tokens, or long-context language modeling. This motivates sparse attention, linear attention, memory mechanisms, and retrieval-augmented systems.\n\n## Related concepts\n\n- [[Positional Encoding]] is necessary but not the final answer to sequence order.\n- [[Multi-Head Attention]] produces visualizable weights, but attention visualization is not full causal explanation.\n",
+        "backlinks": [
+          "article:Training and Results",
+          "article:Transformer Architecture",
+          "article:Transformer Reading Path"
+        ]
+      }
+    },
+    {
+      "id": "article:Masked Self-Attention",
+      "type": "article",
+      "name": "Masked Self-Attention",
+      "filePath": "Masked Self-Attention.md",
+      "summary": "[[Masked Self-Attention]] is [[Self-Attention]] with a causal mask. It is used inside the [[Decoder]] so each target position can attend only to earlier target positions and itself.",
+      "tags": [
+        "attention",
+        "attention mechanisms",
+        "decoder"
+      ],
+      "complexity": "moderate",
+      "knowledgeMeta": {
+        "wikilinks": [
+          "Masked Self-Attention",
+          "Self-Attention",
+          "Decoder",
+          "Scaled Dot-Product Attention",
+          "Decoder",
+          "Encoder"
+        ],
+        "category": "Attention Mechanisms",
+        "content": "---\ntags: attention, decoder\n---\n\n# Masked Self-Attention\n\n[[Masked Self-Attention]] is [[Self-Attention]] with a causal mask. It is used inside the [[Decoder]] so each target position can attend only to earlier target positions and itself.\n\nThe mask is applied before softmax in [[Scaled Dot-Product Attention]]. Future positions receive impossible scores, so their attention weights become zero.\n\n## Role in generation\n\nThis mechanism makes parallel training possible while preserving autoregressive behavior. At inference time, tokens are still generated step by step, but the training objective can use all target positions at once with the correct mask.\n\n## Related concepts\n\n- [[Decoder]] depends on masked self-attention.\n- [[Encoder]] does not use causal masking because the source sequence is fully visible.\n",
+        "backlinks": [
+          "article:Decoder",
+          "article:Decoder",
+          "article:Multi-Head Attention",
+          "article:Residual Connection",
+          "article:Scaled Dot-Product Attention",
+          "article:Self-Attention",
+          "article:Transformer Architecture",
+          "article:Transformer Reading Path"
+        ]
+      }
+    },
+    {
+      "id": "article:Multi-Head Attention",
+      "type": "article",
+      "name": "Multi-Head Attention",
+      "filePath": "Multi-Head Attention.md",
+      "summary": "[[Multi-Head Attention]] runs several attention heads in parallel. Each head has its own learned projections for queries, keys, and values, so different heads can attend to different relation types...",
+      "tags": [
+        "attention",
+        "attention mechanisms",
+        "representation"
+      ],
+      "complexity": "simple",
+      "knowledgeMeta": {
+        "wikilinks": [
+          "Multi-Head Attention",
+          "Encoder",
+          "Decoder",
+          "Masked Self-Attention",
+          "Encoder-Decoder Attention"
+        ],
+        "category": "Attention Mechanisms",
+        "content": "---\ntags: attention, representation\n---\n\n# Multi-Head Attention\n\n[[Multi-Head Attention]] runs several attention heads in parallel. Each head has its own learned projections for queries, keys, and values, so different heads can attend to different relation types or representation subspaces.\n\nThis solves a limitation of a single attention operation: one attention distribution gives one weighted mixture per token. Multiple heads let the model combine several views, such as local syntax, long-distance dependency, positional relation, and semantic alignment.\n\n## Role in Transformer\n\n- [[Encoder]] uses multi-head self-attention.\n- [[Decoder]] uses multi-head [[Masked Self-Attention]].\n- [[Encoder-Decoder Attention]] is also implemented as multi-head attention.\n\n## Interpretability caveat\n\nAttention visualizations can reveal useful patterns, but attention weights should not be treated as a complete explanation of model reasoning.\n",
+        "backlinks": [
+          "article:Encoder",
+          "article:Feed Forward Network",
+          "article:Limitations",
+          "article:Residual Connection",
+          "article:Scaled Dot-Product Attention",
+          "article:Self-Attention",
+          "article:Transformer Architecture",
+          "article:Transformer Reading Path"
+        ]
+      }
+    },
+    {
+      "id": "article:Positional Encoding",
+      "type": "article",
+      "name": "Positional Encoding",
+      "filePath": "Positional Encoding.md",
+      "summary": "[[Positional Encoding]] injects order information into [[Transformer Architecture]]. Because [[Self-Attention]] is permutation-invariant by itself, the model needs an explicit signal that distingui...",
+      "tags": [
+        "position",
+        "representation"
+      ],
+      "complexity": "simple",
+      "knowledgeMeta": {
+        "wikilinks": [
+          "Positional Encoding",
+          "Transformer Architecture",
+          "Self-Attention",
+          "Token Embedding"
+        ],
+        "category": "Representation",
+        "content": "---\ntags: representation, position\n---\n\n# Positional Encoding\n\n[[Positional Encoding]] injects order information into [[Transformer Architecture]]. Because [[Self-Attention]] is permutation-invariant by itself, the model needs an explicit signal that distinguishes first token, second token, and so on.\n\nThe original paper uses sinusoidal position vectors added to [[Token Embedding]]. Sine and cosine waves at different frequencies allow the model to represent absolute and relative positional patterns.\n\n## Why it matters\n\nWithout positional encoding, the same set of tokens in a different order would look too similar to the attention mechanism. Position encoding makes sequence order available while preserving parallel computation.\n\n## Later developments\n\nThe original sinusoidal encoding has limitations. Later models often use learned positional embeddings, relative position bias, RoPE, or ALiBi.\n",
+        "backlinks": [
+          "article:Encoder",
+          "article:Limitations",
+          "article:Token Embedding",
+          "article:Token Embedding",
+          "article:Transformer Architecture",
+          "article:Transformer Reading Path"
+        ]
+      }
+    },
+    {
+      "id": "article:Residual Connection",
+      "type": "article",
+      "name": "Residual Connection",
+      "filePath": "Residual Connection.md",
+      "summary": "[[Residual Connection]] adds a sublayer input back to its output. In [[Transformer Architecture]], every attention and feed-forward sublayer is wrapped with a residual path and [[Layer Normalizatio...",
+      "tags": [
+        "architecture",
+        "optimization",
+        "representation"
+      ],
+      "complexity": "moderate",
+      "knowledgeMeta": {
+        "wikilinks": [
+          "Residual Connection",
+          "Transformer Architecture",
+          "Layer Normalization",
+          "Multi-Head Attention",
+          "Masked Self-Attention",
+          "Encoder-Decoder Attention",
+          "Feed Forward Network"
+        ],
+        "category": "Representation",
+        "content": "---\ntags: optimization, architecture\n---\n\n# Residual Connection\n\n[[Residual Connection]] adds a sublayer input back to its output. In [[Transformer Architecture]], every attention and feed-forward sublayer is wrapped with a residual path and [[Layer Normalization]].\n\nResidual paths help optimization because gradients can flow through shorter routes. They also let each layer refine a representation instead of replacing it completely.\n\n## Role in Transformer\n\nResidual connections appear around [[Multi-Head Attention]], [[Masked Self-Attention]], [[Encoder-Decoder Attention]], and [[Feed Forward Network]].\n\n## Why it matters\n\nDeep stacks of attention layers would be harder to train without residual structure. The residual path is part of why Transformer layers can be composed repeatedly.\n",
+        "backlinks": [
+          "article:Decoder",
+          "article:Encoder",
+          "article:Feed Forward Network",
+          "article:Layer Normalization",
+          "article:Layer Normalization",
+          "article:Transformer Architecture",
+          "article:Transformer Reading Path"
+        ]
+      }
+    },
+    {
+      "id": "article:Scaled Dot-Product Attention",
+      "type": "article",
+      "name": "Scaled Dot-Product Attention",
+      "filePath": "Scaled Dot-Product Attention.md",
+      "summary": "[[Scaled Dot-Product Attention]] is the primitive operation used by [[Self-Attention]] and [[Multi-Head Attention]]. It compares queries and keys with a dot product, divides by the square root of t...",
+      "tags": [
+        "attention",
+        "attention mechanisms",
+        "mechanism"
+      ],
+      "complexity": "moderate",
+      "knowledgeMeta": {
+        "wikilinks": [
+          "Scaled Dot-Product Attention",
+          "Self-Attention",
+          "Multi-Head Attention",
+          "Self-Attention",
+          "Encoder-Decoder Attention",
+          "Masked Self-Attention"
+        ],
+        "category": "Attention Mechanisms",
+        "content": "---\ntags: attention, mechanism\n---\n\n# Scaled Dot-Product Attention\n\n[[Scaled Dot-Product Attention]] is the primitive operation used by [[Self-Attention]] and [[Multi-Head Attention]]. It compares queries and keys with a dot product, divides by the square root of the key dimension, applies softmax, and uses the result to mix values.\n\nThe scaling factor stabilizes gradients when key/query dimensions are large. Without scaling, dot products can grow large, pushing softmax into regions with very small gradients.\n\n## Formula\n\nAttention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V\n\n## Related concepts\n\n- [[Self-Attention]] applies this operation within one sequence.\n- [[Encoder-Decoder Attention]] applies it from decoder queries to encoder keys and values.\n- [[Masked Self-Attention]] adds a causal mask before softmax.\n",
+        "backlinks": [
+          "article:Masked Self-Attention",
+          "article:Transformer Reading Path"
+        ]
+      }
+    },
+    {
+      "id": "article:Self-Attention",
+      "type": "article",
+      "name": "Self-Attention",
+      "filePath": "Self-Attention.md",
+      "summary": "[[Self-Attention]] computes relationships among tokens inside the same sequence. Each token is projected into a query, key, and value. The query of one token is compared with keys from all tokens, ...",
+      "tags": [
+        "attention",
+        "attention mechanisms",
+        "mechanism"
+      ],
+      "complexity": "moderate",
+      "knowledgeMeta": {
+        "wikilinks": [
+          "Self-Attention",
+          "Transformer Architecture",
+          "Encoder",
+          "Decoder",
+          "Masked Self-Attention",
+          "Multi-Head Attention"
+        ],
+        "category": "Attention Mechanisms",
+        "content": "---\ntags: attention, mechanism\n---\n\n# Self-Attention\n\n[[Self-Attention]] computes relationships among tokens inside the same sequence. Each token is projected into a query, key, and value. The query of one token is compared with keys from all tokens, producing weights over the corresponding values.\n\nSelf-attention is the mechanism that lets [[Transformer Architecture]] avoid recurrence. Any token can directly attend to any other token, so the path length between positions is constant rather than proportional to sequence distance.\n\n## Role in Transformer\n\n- In [[Encoder]], self-attention is bidirectional over the input sequence.\n- In [[Decoder]], [[Masked Self-Attention]] restricts access to future tokens.\n- [[Multi-Head Attention]] runs self-attention several times in parallel.\n\n## Tradeoff\n\nSelf-attention is highly parallel, but the attention matrix scales as O(n²) with sequence length. This motivates later sparse and linear attention variants.\n",
+        "backlinks": [
+          "article:Encoder-Decoder Attention",
+          "article:Encoder",
+          "article:Limitations",
+          "article:Masked Self-Attention",
+          "article:Positional Encoding",
+          "article:Scaled Dot-Product Attention",
+          "article:Scaled Dot-Product Attention",
+          "article:Token Embedding",
+          "article:Training and Results",
+          "article:Transformer Architecture",
+          "article:Transformer Architecture",
+          "article:Transformer Reading Path"
+        ]
+      }
+    },
+    {
+      "id": "article:Token Embedding",
+      "type": "article",
+      "name": "Token Embedding",
+      "filePath": "Token Embedding.md",
+      "summary": "[[Token Embedding]] maps discrete token IDs into dense vectors. In [[Transformer Architecture]], token embeddings are the starting representation before [[Positional Encoding]] is added.",
+      "tags": [
+        "embedding",
+        "representation"
+      ],
+      "complexity": "moderate",
+      "knowledgeMeta": {
+        "wikilinks": [
+          "Token Embedding",
+          "Transformer Architecture",
+          "Positional Encoding",
+          "Encoder",
+          "Decoder",
+          "Positional Encoding",
+          "Self-Attention"
+        ],
+        "category": "Representation",
+        "content": "---\ntags: representation, embedding\n---\n\n# Token Embedding\n\n[[Token Embedding]] maps discrete token IDs into dense vectors. In [[Transformer Architecture]], token embeddings are the starting representation before [[Positional Encoding]] is added.\n\nThe embedding gives each token a learned semantic representation, while positional encoding gives it an order signal. Their sum becomes the input to the first [[Encoder]] or [[Decoder]] layer.\n\n## Role in Transformer\n\nEmbeddings are shared conceptually across the model input and output vocabulary. The original paper also scales embeddings by the square root of the model dimension.\n\n## Related concepts\n\n- [[Positional Encoding]] complements token identity with order.\n- [[Self-Attention]] uses the resulting vectors to build query, key, and value projections.\n",
+        "backlinks": [
+          "article:Encoder",
+          "article:Positional Encoding",
+          "article:Transformer Architecture",
+          "article:Transformer Reading Path"
+        ]
+      }
+    },
+    {
+      "id": "article:Training and Results",
+      "type": "article",
+      "name": "Training and Results",
+      "filePath": "Training and Results.md",
+      "summary": "[[Training and Results]] summarizes the empirical evidence for [[Transformer Architecture]]. The original paper reports strong machine translation performance on WMT 2014 English-German and English...",
+      "tags": [
+        "evidence",
+        "training",
+        "training and evidence"
+      ],
+      "complexity": "simple",
+      "knowledgeMeta": {
+        "wikilinks": [
+          "Training and Results",
+          "Transformer Architecture",
+          "Self-Attention",
+          "Limitations",
+          "Transformer Reading Path"
+        ],
+        "category": "Training and Evidence",
+        "content": "---\ntags: evidence, training\n---\n\n# Training and Results\n\n[[Training and Results]] summarizes the empirical evidence for [[Transformer Architecture]]. The original paper reports strong machine translation performance on WMT 2014 English-German and English-French benchmarks.\n\nThe important result is not only better BLEU. The model trains much faster than recurrent alternatives because [[Self-Attention]] avoids sequential hidden-state computation and exposes more parallelism to GPUs.\n\n## Reported outcomes\n\n- Transformer base reaches strong translation quality with lower training cost.\n- Transformer big improves quality further.\n- The architecture generalizes beyond machine translation and later becomes the basis for BERT, GPT, T5, and many multimodal models.\n\n## Related concepts\n\n- [[Limitations]] explains why quadratic attention becomes a bottleneck for long contexts.\n- [[Transformer Reading Path]] gives a learning order for the architecture.\n",
+        "backlinks": [
+          "article:Transformer Architecture",
+          "article:Transformer Reading Path"
+        ]
+      }
+    },
+    {
+      "id": "article:Transformer Architecture",
+      "type": "article",
+      "name": "Transformer Architecture",
+      "filePath": "Transformer Architecture.md",
+      "summary": "[[Transformer Architecture]] is an encoder-decoder sequence model built around [[Self-Attention]] instead of recurrence or convolution. Its core design goal is to model token-to-token dependencies ...",
+      "tags": [
+        "architecture",
+        "transformer"
+      ],
+      "complexity": "moderate",
+      "knowledgeMeta": {
+        "wikilinks": [
+          "Transformer Architecture",
+          "Self-Attention",
+          "Encoder",
+          "Decoder",
+          "Token Embedding",
+          "Positional Encoding",
+          "Residual Connection",
+          "Layer Normalization",
+          "Feed Forward Network",
+          "Masked Self-Attention",
+          "Encoder-Decoder Attention",
+          "Self-Attention",
+          "Multi-Head Attention",
+          "Training and Results",
+          "Limitations"
+        ],
+        "category": "Architecture",
+        "content": "---\ntags: architecture, transformer\n---\n\n# Transformer Architecture\n\n[[Transformer Architecture]] is an encoder-decoder sequence model built around [[Self-Attention]] instead of recurrence or convolution. Its core design goal is to model token-to-token dependencies while allowing parallel computation across positions.\n\nThe architecture has two main halves: [[Encoder]] and [[Decoder]]. Both use [[Token Embedding]], [[Positional Encoding]], [[Residual Connection]], [[Layer Normalization]], and [[Feed Forward Network]]. The decoder additionally uses [[Masked Self-Attention]] and [[Encoder-Decoder Attention]] to generate output tokens autoregressively.\n\n## Why it matters\n\nThe key claim is that attention alone is enough for high-quality sequence transduction. This makes long-range dependency paths short and makes training much more parallel than RNN-based models.\n\n## Related concepts\n\n- [[Self-Attention]] provides global token interaction.\n- [[Multi-Head Attention]] expands attention into multiple learned relation subspaces.\n- [[Training and Results]] gives empirical evidence for the design.\n- [[Limitations]] explains the quadratic sequence-length cost.\n",
+        "backlinks": [
+          "article:Decoder",
+          "article:Encoder",
+          "article:Layer Normalization",
+          "article:Limitations",
+          "article:Positional Encoding",
+          "article:Residual Connection",
+          "article:Self-Attention",
+          "article:Token Embedding",
+          "article:Training and Results",
+          "article:Transformer Reading Path",
+          "article:Transformer Reading Path"
+        ]
+      }
+    },
+    {
+      "id": "article:Transformer Reading Path",
+      "type": "article",
+      "name": "Transformer Reading Path",
+      "filePath": "Transformer Reading Path.md",
+      "summary": "[[Transformer Reading Path]] gives a practical order for understanding [[Transformer Architecture]]. The goal is to move from the full model to the mechanisms that make it work.",
+      "tags": [
+        "learning-path",
+        "training and evidence",
+        "transformer"
+      ],
+      "complexity": "complex",
+      "knowledgeMeta": {
+        "wikilinks": [
+          "Transformer Reading Path",
+          "Transformer Architecture",
+          "Transformer Architecture",
+          "Token Embedding",
+          "Positional Encoding",
+          "Scaled Dot-Product Attention",
+          "Self-Attention",
+          "Multi-Head Attention",
+          "Encoder",
+          "Decoder",
+          "Masked Self-Attention",
+          "Encoder-Decoder Attention",
+          "Residual Connection",
+          "Layer Normalization",
+          "Feed Forward Network",
+          "Training and Results",
+          "Limitations"
+        ],
+        "category": "Training and Evidence",
+        "content": "---\ntags: learning-path, transformer\n---\n\n# Transformer Reading Path\n\n[[Transformer Reading Path]] gives a practical order for understanding [[Transformer Architecture]]. The goal is to move from the full model to the mechanisms that make it work.\n\n## Recommended order\n\n1. Start with [[Transformer Architecture]] to understand the whole encoder-decoder design.\n2. Read [[Token Embedding]] and [[Positional Encoding]] to understand input representation.\n3. Read [[Scaled Dot-Product Attention]] and [[Self-Attention]] to understand the core operation.\n4. Read [[Multi-Head Attention]] to understand why multiple attention subspaces matter.\n5. Read [[Encoder]] and [[Decoder]] to understand how layers are assembled.\n6. Read [[Masked Self-Attention]] and [[Encoder-Decoder Attention]] to understand generation.\n7. Read [[Residual Connection]], [[Layer Normalization]], and [[Feed Forward Network]] to understand trainable depth.\n8. Finish with [[Training and Results]] and [[Limitations]].\n\n## How to use with Understand-Anything\n\nGenerate the graph, open the dashboard, then follow this path as a guided conceptual tour. Use search for terms like attention, masking, position, residual, and long context.\n",
+        "backlinks": [
+          "article:Training and Results"
+        ]
+      }
+    },
+    {
+      "id": "article:raw/attention-is-all-you-need",
+      "type": "article",
+      "name": "Attention Is All You Need",
+      "filePath": "raw/attention-is-all-you-need.md",
+      "summary": "Source: https://arxiv.org/abs/1706.03762",
+      "tags": [
+        "raw"
+      ],
+      "complexity": "simple",
+      "knowledgeMeta": {
+        "wikilinks": [],
+        "content": "# Attention Is All You Need\n\nSource: https://arxiv.org/abs/1706.03762\n\nThe paper introduces the Transformer, an encoder-decoder architecture based entirely on attention mechanisms. It removes recurrence and convolution from sequence transduction. The main mechanism is scaled dot-product attention, where each token produces query, key, and value vectors. Self-attention lets every token attend to every other token in the same sequence. Multi-head attention runs several attention operations in parallel so the model can represent different relation types in different subspaces.\n\nThe architecture uses token embeddings, sinusoidal positional encoding, residual connections, layer normalization, and position-wise feed-forward networks. The encoder stacks repeated layers containing self-attention and feed-forward sublayers. The decoder stacks repeated layers containing masked self-attention, encoder-decoder attention, and feed-forward sublayers.\n\nThe paper reports strong machine translation results on WMT 2014 English-German and English-French benchmarks, with faster training than recurrent or convolutional alternatives. Its key tradeoff is that self-attention has quadratic cost in sequence length, which is expensive for long contexts.\n",
+        "backlinks": []
+      }
+    },
+    {
+      "id": "topic:architecture",
+      "type": "topic",
+      "name": "Architecture",
+      "summary": "Category from index: Architecture (4 articles)",
+      "tags": [
+        "category"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "topic:attention-mechanisms",
+      "type": "topic",
+      "name": "Attention Mechanisms",
+      "summary": "Category from index: Attention Mechanisms (4 articles)",
+      "tags": [
+        "category"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "topic:representation",
+      "type": "topic",
+      "name": "Representation",
+      "summary": "Category from index: Representation (5 articles)",
+      "tags": [
+        "category"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "topic:training-and-evidence",
+      "type": "topic",
+      "name": "Training and Evidence",
+      "summary": "Category from index: Training and Evidence (3 articles)",
+      "tags": [
+        "category"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "source:attention-is-all-you-need",
+      "type": "source",
+      "name": "attention-is-all-you-need.md",
+      "filePath": "raw/attention-is-all-you-need.md",
+      "summary": "Raw source (.md, 1 KB)",
+      "tags": [
+        "raw",
+        "md"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "article:Decoder",
+      "target": "article:Transformer Architecture",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Decoder",
+      "target": "article:Encoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Decoder",
+      "target": "article:Masked Self-Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Decoder",
+      "target": "article:Encoder-Decoder Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Decoder",
+      "target": "article:Feed Forward Network",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Decoder",
+      "target": "article:Residual Connection",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Decoder",
+      "target": "article:Layer Normalization",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Encoder-Decoder Attention",
+      "target": "article:Decoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Encoder-Decoder Attention",
+      "target": "article:Encoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Encoder-Decoder Attention",
+      "target": "article:Self-Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Encoder",
+      "target": "article:Transformer Architecture",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Encoder",
+      "target": "article:Decoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Encoder",
+      "target": "article:Encoder-Decoder Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Encoder",
+      "target": "article:Multi-Head Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Encoder",
+      "target": "article:Self-Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Encoder",
+      "target": "article:Feed Forward Network",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Encoder",
+      "target": "article:Residual Connection",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Encoder",
+      "target": "article:Layer Normalization",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Encoder",
+      "target": "article:Token Embedding",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Encoder",
+      "target": "article:Positional Encoding",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Feed Forward Network",
+      "target": "article:Encoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Feed Forward Network",
+      "target": "article:Decoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Feed Forward Network",
+      "target": "article:Multi-Head Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Feed Forward Network",
+      "target": "article:Residual Connection",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Feed Forward Network",
+      "target": "article:Layer Normalization",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Layer Normalization",
+      "target": "article:Transformer Architecture",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Layer Normalization",
+      "target": "article:Residual Connection",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Layer Normalization",
+      "target": "article:Encoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Layer Normalization",
+      "target": "article:Decoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Layer Normalization",
+      "target": "article:Feed Forward Network",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Limitations",
+      "target": "article:Transformer Architecture",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Limitations",
+      "target": "article:Self-Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Limitations",
+      "target": "article:Positional Encoding",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Limitations",
+      "target": "article:Multi-Head Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Masked Self-Attention",
+      "target": "article:Self-Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Masked Self-Attention",
+      "target": "article:Decoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Masked Self-Attention",
+      "target": "article:Scaled Dot-Product Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Masked Self-Attention",
+      "target": "article:Encoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Multi-Head Attention",
+      "target": "article:Encoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Multi-Head Attention",
+      "target": "article:Decoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Multi-Head Attention",
+      "target": "article:Masked Self-Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Multi-Head Attention",
+      "target": "article:Encoder-Decoder Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Positional Encoding",
+      "target": "article:Transformer Architecture",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Positional Encoding",
+      "target": "article:Self-Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Positional Encoding",
+      "target": "article:Token Embedding",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Residual Connection",
+      "target": "article:Transformer Architecture",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Residual Connection",
+      "target": "article:Layer Normalization",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Residual Connection",
+      "target": "article:Multi-Head Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Residual Connection",
+      "target": "article:Masked Self-Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Residual Connection",
+      "target": "article:Encoder-Decoder Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Residual Connection",
+      "target": "article:Feed Forward Network",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Scaled Dot-Product Attention",
+      "target": "article:Self-Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Scaled Dot-Product Attention",
+      "target": "article:Multi-Head Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Scaled Dot-Product Attention",
+      "target": "article:Encoder-Decoder Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Scaled Dot-Product Attention",
+      "target": "article:Masked Self-Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Self-Attention",
+      "target": "article:Transformer Architecture",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Self-Attention",
+      "target": "article:Encoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Self-Attention",
+      "target": "article:Decoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Self-Attention",
+      "target": "article:Masked Self-Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Self-Attention",
+      "target": "article:Multi-Head Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Token Embedding",
+      "target": "article:Transformer Architecture",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Token Embedding",
+      "target": "article:Positional Encoding",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Token Embedding",
+      "target": "article:Encoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Token Embedding",
+      "target": "article:Decoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Token Embedding",
+      "target": "article:Self-Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Training and Results",
+      "target": "article:Transformer Architecture",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Training and Results",
+      "target": "article:Self-Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Training and Results",
+      "target": "article:Limitations",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Training and Results",
+      "target": "article:Transformer Reading Path",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Architecture",
+      "target": "article:Self-Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Architecture",
+      "target": "article:Encoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Architecture",
+      "target": "article:Decoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Architecture",
+      "target": "article:Token Embedding",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Architecture",
+      "target": "article:Positional Encoding",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Architecture",
+      "target": "article:Residual Connection",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Architecture",
+      "target": "article:Layer Normalization",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Architecture",
+      "target": "article:Feed Forward Network",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Architecture",
+      "target": "article:Masked Self-Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Architecture",
+      "target": "article:Encoder-Decoder Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Architecture",
+      "target": "article:Multi-Head Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Architecture",
+      "target": "article:Training and Results",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Architecture",
+      "target": "article:Limitations",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Reading Path",
+      "target": "article:Transformer Architecture",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Reading Path",
+      "target": "article:Token Embedding",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Reading Path",
+      "target": "article:Positional Encoding",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Reading Path",
+      "target": "article:Scaled Dot-Product Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Reading Path",
+      "target": "article:Self-Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Reading Path",
+      "target": "article:Multi-Head Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Reading Path",
+      "target": "article:Encoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Reading Path",
+      "target": "article:Decoder",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Reading Path",
+      "target": "article:Masked Self-Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Reading Path",
+      "target": "article:Encoder-Decoder Attention",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Reading Path",
+      "target": "article:Residual Connection",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Reading Path",
+      "target": "article:Layer Normalization",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Reading Path",
+      "target": "article:Feed Forward Network",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Reading Path",
+      "target": "article:Training and Results",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Reading Path",
+      "target": "article:Limitations",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "article:Transformer Architecture",
+      "target": "topic:architecture",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "article:Encoder",
+      "target": "topic:architecture",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "article:Decoder",
+      "target": "topic:architecture",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "article:Encoder-Decoder Attention",
+      "target": "topic:architecture",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "article:Self-Attention",
+      "target": "topic:attention-mechanisms",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "article:Scaled Dot-Product Attention",
+      "target": "topic:attention-mechanisms",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "article:Multi-Head Attention",
+      "target": "topic:attention-mechanisms",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "article:Masked Self-Attention",
+      "target": "topic:attention-mechanisms",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "article:Token Embedding",
+      "target": "topic:representation",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "article:Positional Encoding",
+      "target": "topic:representation",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "article:Residual Connection",
+      "target": "topic:representation",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "article:Layer Normalization",
+      "target": "topic:representation",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "article:Feed Forward Network",
+      "target": "topic:representation",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "article:Training and Results",
+      "target": "topic:training-and-evidence",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "article:Limitations",
+      "target": "topic:training-and-evidence",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "article:Transformer Reading Path",
+      "target": "topic:training-and-evidence",
+      "type": "categorized_under",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:architecture",
+      "name": "Architecture",
+      "description": "Architecture (5 nodes)",
+      "nodeIds": [
+        "article:Transformer Architecture",
+        "article:Encoder",
+        "article:Decoder",
+        "article:Encoder-Decoder Attention",
+        "topic:architecture"
+      ]
+    },
+    {
+      "id": "layer:attention-mechanisms",
+      "name": "Attention Mechanisms",
+      "description": "Attention Mechanisms (5 nodes)",
+      "nodeIds": [
+        "article:Self-Attention",
+        "article:Scaled Dot-Product Attention",
+        "article:Multi-Head Attention",
+        "article:Masked Self-Attention",
+        "topic:attention-mechanisms"
+      ]
+    },
+    {
+      "id": "layer:representation",
+      "name": "Representation",
+      "description": "Representation (6 nodes)",
+      "nodeIds": [
+        "article:Token Embedding",
+        "article:Positional Encoding",
+        "article:Residual Connection",
+        "article:Layer Normalization",
+        "article:Feed Forward Network",
+        "topic:representation"
+      ]
+    },
+    {
+      "id": "layer:training-and-evidence",
+      "name": "Training and Evidence",
+      "description": "Training and Evidence (4 nodes)",
+      "nodeIds": [
+        "article:Training and Results",
+        "article:Limitations",
+        "article:Transformer Reading Path",
+        "topic:training-and-evidence"
+      ]
+    },
+    {
+      "id": "layer:other",
+      "name": "Other",
+      "description": "Uncategorized nodes (2)",
+      "nodeIds": [
+        "article:raw/attention-is-all-you-need",
+        "source:attention-is-all-you-need"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "Architecture",
+      "description": "Explore the Architecture section (4 articles)",
+      "nodeIds": [
+        "article:Transformer Architecture",
+        "article:Encoder",
+        "article:Decoder"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Attention Mechanisms",
+      "description": "Explore the Attention Mechanisms section (4 articles)",
+      "nodeIds": [
+        "article:Self-Attention",
+        "article:Scaled Dot-Product Attention",
+        "article:Multi-Head Attention"
+      ]
+    },
+    {
+      "order": 3,
+      "title": "Representation",
+      "description": "Explore the Representation section (5 articles)",
+      "nodeIds": [
+        "article:Token Embedding",
+        "article:Positional Encoding",
+        "article:Residual Connection"
+      ]
+    },
+    {
+      "order": 4,
+      "title": "Training and Evidence",
+      "description": "Explore the Training and Evidence section (3 articles)",
+      "nodeIds": [
+        "article:Training and Results",
+        "article:Limitations",
+        "article:Transformer Reading Path"
+      ]
+    }
+  ]
+}

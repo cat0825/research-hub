@@ -14,6 +14,8 @@ test("buildResourceFilters normalizes resource list query params", () => {
       tag: "NLP ",
       owner: "42",
       sort: "discussed",
+      limit: "12",
+      offset: "24",
     }),
     {
       q: "transformer",
@@ -21,6 +23,8 @@ test("buildResourceFilters normalizes resource list query params", () => {
       tag: "nlp",
       ownerGithubId: 42,
       sort: "discussed",
+      limit: 12,
+      offset: 24,
     }
   );
 });
@@ -33,9 +37,12 @@ test("buildResourceFilters falls back from invalid type owner and sort", () => {
       tag: " ",
       owner: "nope",
       sort: "random",
+      limit: "999",
+      offset: "0",
     }),
     {
       sort: "latest",
+      limit: 60,
     }
   );
 });
@@ -55,8 +62,10 @@ test("buildResourceQueryString serializes active filters in stable order", () =>
       type: "web",
       tag: "ai-infra",
       sort: "bookmarked",
+      limit: 36,
+      offset: 48,
     }),
-    "q=infra&type=web&tag=ai-infra&sort=bookmarked"
+    "q=infra&type=web&tag=ai-infra&sort=bookmarked&limit=36&offset=48"
   );
 });
 
@@ -67,6 +76,16 @@ test("buildResourceQueryString omits default sort and inactive filters", () => {
       type: undefined,
       tag: undefined,
       sort: "latest",
+    }),
+    ""
+  );
+});
+
+test("buildResourceQueryString omits the default resource limit", () => {
+  assert.equal(
+    buildResourceQueryString({
+      sort: "latest",
+      limit: 24,
     }),
     ""
   );
