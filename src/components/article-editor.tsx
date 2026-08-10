@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { PenLineIcon } from "lucide-react";
+import { EyeIcon, PenLineIcon } from "lucide-react";
 import { parseArticleDraft } from "@/lib/article-form.ts";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -43,6 +44,7 @@ export function ArticleEditor({
     initialValue ?? EMPTY_ARTICLE
   );
   const [error, setError] = useState("");
+  const [previewMode, setPreviewMode] = useState(false);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -92,16 +94,54 @@ export function ArticleEditor({
             }
           />
 
-          <Textarea
-            placeholder="正文内容"
-            required
-            rows={12}
-            value={value.content}
-            onChange={(event) =>
-              setValue((current) => ({ ...current, content: event.target.value }))
-            }
-          />
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-1 rounded-lg border p-0.5 text-sm text-muted-foreground">
+              <button
+                type="button"
+                className={`rounded-md px-3 py-1 transition ${
+                  !previewMode
+                    ? "bg-muted font-medium text-foreground shadow-xs"
+                    : "hover:text-foreground"
+                }`}
+                onClick={() => setPreviewMode(false)}
+              >
+                <PenLineIcon className="mr-1 inline size-3.5" />
+                编辑
+              </button>
+              <button
+                type="button"
+                className={`rounded-md px-3 py-1 transition ${
+                  previewMode
+                    ? "bg-muted font-medium text-foreground shadow-xs"
+                    : "hover:text-foreground"
+                }`}
+                onClick={() => setPreviewMode(true)}
+              >
+                <EyeIcon className="mr-1 inline size-3.5" />
+                预览
+              </button>
+            </div>
 
+            {previewMode ? (
+              <div className="min-h-[200px] rounded-xl border bg-card p-5">
+                {value.content.trim() ? (
+                  <MarkdownRenderer content={value.content} />
+                ) : (
+                  <p className="text-sm text-muted-foreground">还没有正文内容。</p>
+                )}
+              </div>
+            ) : (
+              <Textarea
+                placeholder="正文内容，支持 Markdown 格式"
+                required
+                rows={12}
+                value={value.content}
+                onChange={(event) =>
+                  setValue((current) => ({ ...current, content: event.target.value }))
+                }
+              />
+            )}
+          </div>
           <div className="flex flex-wrap gap-3">
             <Button type="submit" disabled={pending}>
               {pending ? "保存中..." : submitLabel}

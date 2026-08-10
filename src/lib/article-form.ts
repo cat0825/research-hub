@@ -1,3 +1,5 @@
+import { stripMarkdown } from "./markdown.ts";
+
 export interface ArticleDraftPayload {
   title: string;
   summary?: string;
@@ -23,7 +25,8 @@ function assertString(value: unknown, message: string): string {
 }
 
 function buildSummary(content: string): string {
-  const compact = content.replace(/\s+/g, " ").trim();
+  const plain = stripMarkdown(content);
+  const compact = plain.replace(/\s+/g, " ").trim();
   return compact.length > SUMMARY_MAX_LENGTH
     ? `${compact.slice(0, SUMMARY_MAX_LENGTH - 1)}…`
     : compact;

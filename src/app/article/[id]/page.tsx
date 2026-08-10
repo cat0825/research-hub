@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowLeftIcon, Code2Icon } from "lucide-react";
 import { getArticleById } from "@/lib/article-service.ts";
 import { formatResourceDate } from "@/lib/resource-display.ts";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
 import type { ArticleSummary } from "@/lib/resource-types.ts";
 
 export default async function ArticlePage({
@@ -80,8 +81,8 @@ export default async function ArticlePage({
         </div>
       </header>
 
-      <div className="whitespace-pre-wrap rounded-xl border bg-card p-5 text-base leading-8">
-        {article.content}
+      <div className="rounded-xl border bg-card p-5">
+        <MarkdownRenderer content={article.content} />
       </div>
     </article>
   );

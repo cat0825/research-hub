@@ -37,3 +37,31 @@ test("parseArticleDraft rejects blank title or content", () => {
     /文章正文不能为空/
   );
 });
+
+test("parseArticleDraft strips markdown syntax from auto-generated summary", () => {
+  const draft = parseArticleDraft({
+    title: "Markdown 测试",
+    summary: "",
+    content:
+      "# 大标题\n\n这是 **粗体** 和 *斜体* 文本。\n\n" +
+      "一个 [链接](https://example.com) 在这里。\n\n" +
+      "```\n代码块\n```\n\n" +
+      "- 列表项\n\n" +
+      "![图片](https://example.com/img.png)",
+  });
+
+  assert.equal(
+    draft.summary,
+    "大标题 这是 粗体 和 斜体 文本。 一个 链接 在这里。 列表项 图片"
+  );
+});
+
+test("parseArticleDraft unwraps inline code in summary", () => {
+  const draft = parseArticleDraft({
+    title: "内联代码",
+    summary: "",
+    content: "使用 `parseArticleDraft` 函数。",
+  });
+
+  assert.equal(draft.summary, "使用 parseArticleDraft 函数。");
+});
